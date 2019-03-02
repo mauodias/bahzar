@@ -12,11 +12,12 @@ def index():
 @app.route('/create', methods=['POST'])
 def createProduct():
   requestData = request.get_json()
+  owner = requestData['owner']
   name = requestData['name']
   price = requestData['price']
   description = requestData['description']
   tags = requestData['tags']
-  product_id = products.createProduct(name=name, price=price, description=description, tags=tags)
+  product_id = products.createProduct(owner=owner, name=name, price=price, description=description, tags=tags)
   if product_id:
     product = {"product_id": product_id}
     return Response(json.dumps(product), status=201, mimetype='application/json')
