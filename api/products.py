@@ -1,6 +1,6 @@
-import db
 import json
 from bson.json_util import dumps
+from tools import get_connection
 
 def createProduct(owner, name, price, description, tags):
   connection = db.get_connection()
@@ -17,6 +17,6 @@ def createProduct(owner, name, price, description, tags):
   return str(product_id.inserted_id)
 
 def listProducts():
-  connection = db.get_connection()
+  connection = get_connection()
   products = connection['products']
   return dumps(list(products.find()))
