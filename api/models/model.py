@@ -1,4 +1,3 @@
-from tools import db
 from bson import ObjectId
 
 class Model(dict):
