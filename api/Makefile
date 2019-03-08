@@ -12,3 +12,6 @@ run: deps
 
 debug: deps
 	$(source_venv) MONGODB_URL="mongodb://localhost:27017" FLASK_ENV=development FLASK_APP=app.py flask run
+
+clean:
+	find . -name \*.pyc -delete; find . -type d -name __pycache__ -delete
