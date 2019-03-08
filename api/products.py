@@ -1,6 +1,6 @@
 import json
 from bson.json_util import dumps
-from tools import get_connection
+from models.db import get_connection
 
 def createProduct(owner, name, price, description, tags):
   connection = db.get_connection()
