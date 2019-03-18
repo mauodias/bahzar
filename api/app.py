@@ -1,7 +1,8 @@
 from flask import Flask, request, Response
 import json
+from bson.json_util import default, object_hook
 
-import products
+from models import Product, User
 
 app = Flask(__name__)
 
@@ -9,7 +10,7 @@ app = Flask(__name__)
 def index():
   return "Bahzar"
 
-@app.route('/create', methods=['POST'])
+@app.route('/createProduct', methods=['POST'])
 def createProduct():
   requestData = request.get_json()
   owner = requestData['owner']
@@ -17,17 +18,21 @@ def createProduct():
   price = requestData['price']
   description = requestData['description']
   tags = requestData['tags']
-  product_id = products.createProduct(owner=owner, name=name, price=price, description=description, tags=tags)
-  if product_id:
-    product = {"product_id": product_id}
-    return Response(json.dumps(product), status=201, mimetype='application/json')
-  else:
-    error = {"error": product_id}
-    return Response(json.dumps(error), status=500, mimetype='application/json')
+  product = Product(owner=owner,name=name, price=price, description=description, tags=tags)
+  product.save()
+  return Response(json.dumps(product, default=default), status=201, mimetype='application/json')
 
-@app.route('/list')
+@app.route('/listProducts', methods=['GET'])
 def listProducts():
-  return products.listProducts()
+  return Response(json.dumps(Product.get_items(), default=default), status=201, mimetype='application/json')
+
+@app.route('/createUser', methods=['POST'])
+def createUser():
+  requestData = request.get_json()
+  email = requestData['email']
+  user = User(email=email)
+  user.save()
+  return Response(json.dumps(user, default=default), status=201, mimetype='application/json')
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
