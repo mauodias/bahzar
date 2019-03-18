@@ -1,22 +1,22 @@
 from bson import ObjectId
 
 class Model(dict):
-    __getattr__ = dict.get
-    __delattr__ = dict.__delitem__
-    __setattr__ = dict.__setitem__
+  __getattr__ = dict.get
+  __delattr__ = dict.__delitem__
+  __setattr__ = dict.__setitem__
 
-    def save(self):
-        if not self._id:
-            self.collection.insert(self)
-        else:
-            self.collection.update({"_id": ObjectId(self._id)}, self)
+  def save(self):
+    if not self._id:
+      self.collection.insert(self)
+    else:
+      self.collection.update({"_id": ObjectId(self._id)}, self)
 
-    def reload(self):
-        if self._id:
-            self.update(self.collection.find_one({"_id": ObjectId(self._id)}))
+  def reload(self):
+    if self._id:
+      self.update(self.collection.find_one({"_id": ObjectId(self._id)}))
 
-    def remove(self):
-        if self._id:
-            self.collection.remove({"_id": ObjectId(self._id)})
-            self.clear()
+  def remove(self):
+    if self._id:
+      self.collection.remove({"_id": ObjectId(self._id)})
+      self.clear()
 
