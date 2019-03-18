@@ -20,3 +20,19 @@ class Model(dict):
       self.collection.remove({"_id": ObjectId(self._id)})
       self.clear()
 
+  @classmethod
+  def get_items(cls, fields=None):
+    results = []
+    for item in cls.collection.find(fields if fields else {}):
+      results.append(cls.init_with_document(item))
+    return results
+
+  @classmethod
+  def get_item(cls, _id):
+    if not isinstance(_id, ObjectId):
+      _id = ObjectId(_id)
+    result = cls.collection.find_one({'_id': _id})
+    if result:
+      return cls.init_with_document(result)
+    else:
+      return None
