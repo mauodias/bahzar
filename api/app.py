@@ -2,7 +2,7 @@ from flask import Flask, request, Response
 import json
 from bson.json_util import default, object_hook
 
-from models import Product, User
+from .models import Product, User
 
 app = Flask(__name__)
 
